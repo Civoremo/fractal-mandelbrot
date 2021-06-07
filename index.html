@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal For Beginners - HTML5 Canvas</title>
+</head>
+
+<body>
+    <div>
+        <!-- <input type='range' min='100' max='5000' value='100' step="100" class='slider' id='magnifier'>
+        <br />
+        <div>
+            Magnify Value: <span id='magnifierValue'></span>
+
+        </div>
+        <br /> -->
+        <!-- <input type='range' min='-5' max='5' value='2.5' step="0.1" class='slider' id='panX' >
+    <br/>
+    PanX Value: <span id='panXValue'></span>
+    <br/>
+    <input type='range' min='-5' max='5' value='2' step="0.1" class='slider' id='panY' >
+    <br/>
+    PanY Value: <span id='panYValue'></span> -->
+    </div>
+    <script>
+        let slider = document.getElementById('magnifier');
+        let outputValue = document.getElementById('magnifierValue');
+        outputValue.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            outputValue.innerHTML = this.value;
+        }
+
+        // let panXSlider = document.getElementById('panX');
+        // let outputValuePanX = document.getElementById('panXValue');
+        // outputValuePanX.innerHTML = panXSlider.value;
+
+        // panXSlider.oninput = function() {
+        //     outputValuePanX.innerHTML = this.value;
+        // }
+
+        // let panYSlider = document.getElementById('panY');
+        // let outputValuePanY = document.getElementById('panYValue');
+        // outputValuePanY.innerHTML = panYSlider.value;
+
+        // panYSlider.oninput = function() {
+        //     outputValuePanY.innerHTML = this.value;
+        // }
+
+
+
+        let myCanvas = document.createElement('canvas');
+        myCanvas.width = 400;
+        myCanvas.height = 400;
+        myCanvas.style.border = '1px solid black';
+        document.body.appendChild(myCanvas);
+        let ctx = myCanvas.getContext('2d');
+
+        let magnificationFactor = 100;
+        let panX = 2.5;
+        let panY = 2;
+        let xOffset = 0.5;
+        let yOffset = 1.0;
+
+        function fractalDraw(myCanvas, zoom, xPan, yPan) {
+
+            function checkIfBelongsToMandelbrotSet(x, y) {
+                let realComponentOfResult = x;
+                let imaginaryComponentOfResult = y;
+                let maxIterations = 100;
+
+                for (let i = 0; i < maxIterations; i++) {
+                    let tempRealComponent =
+                        realComponentOfResult * realComponentOfResult -
+                        imaginaryComponentOfResult * imaginaryComponentOfResult +
+                        x;
+
+                    let tempImaginaryComponent = 2 * realComponentOfResult * imaginaryComponentOfResult + y;
+
+                    realComponentOfResult = tempRealComponent;
+                    imaginaryComponentOfResult = tempImaginaryComponent;
+
+                    if (realComponentOfResult * imaginaryComponentOfResult > 10) {
+                        return (i / maxIterations * 100)
+                    }
+                }
+                return 0;
+            }
+
+            // magnificationFactor += zoom;
+            
+
+            let tempOffsetValue = magnificationFactor.toString()[0];
+            // let tempMultiplier = parseInt(tempOffsetValue) - 1;
+            // let tempMultiplier = tempOffsetValue;
+
+            // for(let i = 0; i< magnificationFactor.toString().length-2; i++) {
+            //     tempMultiplier += '0'
+            // }
+
+
+            for(let i = 0; i<magnificationFactor.toString().length-2; i++){
+                tempOffsetValue += '0'
+            }
+            // console.log('Temp', tempOffsetValue)
+            // console.log('xOffset',panX,(xOffset/parseInt(tempOffsetValue)*tempMultiplier),'yOffset',panY, (yOffset/parseInt(tempOffsetValue)*tempMultiplier) )
+            // console.log('yOffset',panY, (yOffset/parseInt(tempOffsetValue)*10) )
+
+            magnificationFactor += zoom;
+            panX -= Math.abs((xOffset*(((zoom*16))/magnificationFactor))/parseFloat(tempOffsetValue));
+            panY -= Math.abs((yOffset*(((zoom*16))/magnificationFactor))/parseFloat(tempOffsetValue));
+
+            // console.log(magnificationFactor,tempMultiplier, xOffset, panX, yOffset, panY)
+
+            // panX -= (xOffset/parseInt(tempOffsetValue*2));
+            // panY -= (yOffset/parseInt(tempOffsetValue*2));
+
+            for (let x = 0; x < myCanvas.width; x++) {
+                for (let y = 0; y < myCanvas.height; y++) {
+                    let belongsToSet = checkIfBelongsToMandelbrotSet(
+                        x / magnificationFactor - panX,
+                        y / magnificationFactor - panY
+                    );
+
+                    if (belongsToSet === 0) {
+                        ctx.fillStyle = '#000';
+                        ctx.fillRect(x, y, 1, 1)
+                    } else {
+                        ctx.fillStyle = 'hsl(0,100%, ' + belongsToSet + '%)';
+                        ctx.fillRect(x, y, 1, 1)
+                    }
+                }
+            }
+        }
+
+
+        let speedAmplifier = 1;
+        function draw() {
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            // if (magnificationFactor < 1000 && panX > 0.5) {
+            //     fractalDraw(myCanvas, 5, 0.06, 0.03);
+            // }
+            // console.log(slider.value)
+            // fractalDraw(myCanvas, 10, 0.1, 0.1);
+            // fractalDraw(myCanvas, slider.value, panXSlider.value, panYSlider.value);
+
+            // fractalDraw(myCanvas, 10, 0.05, 0.1);
+            // console.log('drawing', magnificationFactor, panX, panY)
+
+            // let tempOffsetValue = magnificationFactor.toString()[0];
+            // let tempMultiplier = parseInt(tempOffsetValue) - 1;
+
+            // for (let i = 0; i < magnificationFactor.toString().length; i++) {
+            //     tempOffsetValue += '0'
+            // }
+
+            // let tempXpan = panX - ((xOffset / parseFloat(tempOffsetValue) * 1000) * tempMultiplier);
+            // let tempYpan = panY - ((yOffset / parseFloat(tempOffsetValue) * 1000) * tempMultiplier);
+
+            // console.log(magnificationFactor, tempXpan, tempYpan, (xOffset / parseFloat(tempOffsetValue) * 1000), (yOffset / parseFloat(tempOffsetValue) * 1000), tempMultiplier)
+
+            // fractalDraw(myCanvas, slider.value, tempXpan, tempYpan);
+            // if(magnificationFactor%50000 === 0) {
+            //     speedAmplifier *= 100
+            //     console.log('50 000')
+            // } else if(magnificationFactor%5000 === 0) {
+            //     speedAmplifier += 10000
+            //     console.log('5 000')
+            // } else if(magnificationFactor%500 === 0) {
+            //     speedAmplifier += 10
+            //     console.log('500')
+            // }
+
+            if(magnificationFactor%500 === 0) {
+                speedAmplifier *= 2
+                console.log('50 000')
+            }
+            fractalDraw(myCanvas, (10*speedAmplifier));
+        }
+
+        // draw()
+        let drawInterval = setInterval(draw, 1);
+
+    </script>
+</body>
+
+</html>
