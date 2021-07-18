@@ -9,30 +9,32 @@
 </head>
 
 <body>
-    <div>
+    <div >
+
         <!-- <input type='range' min='100' max='5000' value='100' step="100" class='slider' id='magnifier'>
-        <br />
-        <div>
-            Magnify Value: <span id='magnifierValue'></span>
-
-        </div>
-        <br /> -->
-        <!-- <input type='range' min='-5' max='5' value='2.5' step="0.1" class='slider' id='panX' >
-    <br/>
-    PanX Value: <span id='panXValue'></span>
-    <br/>
-    <input type='range' min='-5' max='5' value='2' step="0.1" class='slider' id='panY' >
-    <br/>
-    PanY Value: <span id='panYValue'></span> -->
-    </div>
+            <br />
+            <div>
+                Magnify Value: <span id='magnifierValue'></span>
+                
+            </div>
+            <br /> -->
+            <!-- <input type='range' min='-5' max='5' value='2.5' step="0.1" class='slider' id='panX' >
+                <br/>
+                PanX Value: <span id='panXValue'></span>
+                <br/>
+                <input type='range' min='-5' max='5' value='2' step="0.1" class='slider' id='panY' >
+                <br/>
+                PanY Value: <span id='panYValue'></span> -->
+            </div>
+            <canvas id='fractalCanvas' style="border: 1px solid blue;" width="400" height="400"></canvas>
     <script>
-        let slider = document.getElementById('magnifier');
-        let outputValue = document.getElementById('magnifierValue');
-        outputValue.innerHTML = slider.value;
+        // let slider = document.getElementById('magnifier');
+        // let outputValue = document.getElementById('magnifierValue');
+        // outputValue.innerHTML = slider.value;
 
-        slider.oninput = function () {
-            outputValue.innerHTML = this.value;
-        }
+        // slider.oninput = function () {
+        //     outputValue.innerHTML = this.value;
+        // }
 
         // let panXSlider = document.getElementById('panX');
         // let outputValuePanX = document.getElementById('panXValue');
@@ -52,10 +54,11 @@
 
 
 
-        let myCanvas = document.createElement('canvas');
-        myCanvas.width = 400;
-        myCanvas.height = 400;
-        myCanvas.style.border = '1px solid black';
+        // let myCanvas = document.createElement('canvas');
+        let myCanvas = document.getElementById('fractalCanvas')
+        // myCanvas.width = 400;
+        // myCanvas.height = 400;
+        // myCanvas.style.border = '1px solid black';
         document.body.appendChild(myCanvas);
         let ctx = myCanvas.getContext('2d');
 
